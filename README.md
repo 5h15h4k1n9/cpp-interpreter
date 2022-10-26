@@ -1,0 +1,41 @@
+# Mini C++ interpreter
+## Tasks
+- [ ] Стандартные типы
+    - [ ] void
+    - [ ] Целочисленные
+        - [ ] short
+        - [ ] unsigned short
+        - [ ] int
+        - [ ] unsigned int
+        - [ ] long
+        - [ ] unsigned long
+        - [ ] long long
+        - [ ] unsigned long long
+    - [ ] bool
+    - [ ] Символьные
+        - [ ] char
+        - [ ] unsigned char
+    - [ ] С плавающей точкой
+        - [ ] float
+        - [ ] double
+        - [ ] long double
+- [ ] Функции
+    - [ ] Объявление
+    - [ ] Рекурсия
+    - [ ] Что-то для печати на консоль
+    - [ ] ~~Анонимные функции~~
+- [ ] Переменные
+    - [ ] Присваивание
+    - [ ] Объявление
+- [ ] Константы
+- [ ] ООП
+    - [ ] Объекты
+        - [ ] Объявление
+        - [ ] Поля
+        - [ ] Методы
+    - [ ] Наследование
+        - [ ] public
+        - [ ] private
+        - [ ] protected
+        - [ ] virtual
+        - [ ] diamond problem :(
