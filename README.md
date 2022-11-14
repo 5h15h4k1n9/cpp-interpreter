@@ -3,16 +3,11 @@
 - [ ] Стандартные типы
     - [ ] void
     - [ ] Целочисленные
-        - [ ] short
-        - [ ] unsigned short
-        - [ ] int
+        - [ ] signed int
         - [ ] unsigned int
-        - [ ] long
-        - [ ] unsigned long
     - [ ] bool
     - [ ] char
     - [ ] С плавающей точкой
-        - [ ] float
         - [ ] double
 - [ ] Функции
     - [ ] Объявление
