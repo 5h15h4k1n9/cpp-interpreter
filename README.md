@@ -9,16 +9,11 @@
         - [ ] unsigned int
         - [ ] long
         - [ ] unsigned long
-        - [ ] long long
-        - [ ] unsigned long long
     - [ ] bool
-    - [ ] Символьные
-        - [ ] char
-        - [ ] unsigned char
+    - [ ] char
     - [ ] С плавающей точкой
         - [ ] float
         - [ ] double
-        - [ ] long double
 - [ ] Функции
     - [ ] Объявление
     - [ ] Рекурсия
