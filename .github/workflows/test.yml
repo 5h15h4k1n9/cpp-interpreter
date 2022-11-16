@@ -15,22 +15,19 @@ jobs:
         os: [ubuntu-latest]
         ghc: [8.6.5, 8.8.3]
 
-    # Setup haskell stack
+# Setup haskell stack
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-haskell@v1
       with:
         ghc-version: ${{ matrix.ghc }}
         enable-stack: true
-    - uses: actions/cache@v2
-      with:
-        path: |
-          ~/.stack
-          .stack-work
-        key: ${{ runner.os }}-${{ matrix.ghc }}-stack
-    - name: Setup stack
-      run: stack setup
+    - name: Install dependencies
+      run: |
+        stack --no-terminal --install-ghc test --only-dependencies
     - name: Build
-      run: stack build
-    - name: Test with coverage
-      run: stack test --test-arguments --color --coverage
+      run: |
+        stack --no-terminal build
+    - name: Test
+      run: |
+        stack --no-terminal test --test-arguments="--color --coverage"
