@@ -32,5 +32,7 @@ jobs:
       run: stack setup
     - name: Build
       run: stack build
-    - name: Test
-      run: stack test --test-arguments="--color"
+    - name: Test with coverage
+      run: stack test --coverage --test-arguments="--color"
+    - name: Print coverage percentage
+      run: cat .stack-work/logs/*.log | grep "All" | grep -o "[0-9]*%"
