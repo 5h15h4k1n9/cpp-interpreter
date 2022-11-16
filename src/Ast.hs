@@ -16,7 +16,7 @@ data CppType =
 -- | TFun CppType [(Id, CppType)]            -- int bar(char x, bool y);
   | TArray CppType Int                      -- int arr[10];
   deriving (Eq, Show)
-  
+
 data CppValue = 
     VVoid                                   -- void foo();
   | VInt Integer IntegerTypeModifier        -- 1, 2, 3
