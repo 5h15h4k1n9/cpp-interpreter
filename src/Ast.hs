@@ -18,10 +18,11 @@ data CppType =
   deriving (Eq, Show)
   
 data CppValue = 
-    VInt Integer                            -- 1, 2, 3
+    VVoid                                   -- void foo();
+  | VInt Integer IntegerTypeModifier        -- 1, 2, 3
   | VBool Bool                              -- true, false
   | VChar Char                              -- 'a', 'b', 'c'
-  | VArray [CppValue]                       -- [1, 2, 3], "abc"
+  | VArray [CppValue] CppType               -- [1, 2, 3], "abc"
   deriving (Eq, Show)
   
 data BinOp = 
