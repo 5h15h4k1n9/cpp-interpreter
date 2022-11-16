@@ -1,0 +1,76 @@
+name: test
+
+on:
+  push:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: ${{ matrix.os }} / GHC ${{ matrix.ghc }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macOS-latest, windows-latest]
+        ghc: [8.6.5, 8.8.3, 8.10.1]
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: haskell/actions/setup@v1
+        id: setup-haskell-cabal
+        with:
+          ghc-version: ${{ matrix.ghc }}
+          cabal-version: '3.2'
+
+      - name: Install dependencies
+        run: |
+          cabal update
+          cabal build --only-dependencies --enable-tests --enable-benchmarks
+
+      - name: Build
+        run: cabal build --enable-tests --enable-benchmarks
+
+      - name: Test
+        run: cabal test --enable-tests --enable-benchmarks
+
+      - name: Bench
+        run: cabal bench --enable-tests --enable-benchmarks
+
+      - name: Haddock
+        run: cabal haddock --enable-tests --enable-benchmarks
+
+      - name: Upload documentation
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ runner.os }}-haddock
+          path: ./dist-newstyle/build/*/ghc-*/$PACKAGE-*/doc/html/$PACKAGE
+
+      - name: Upload coverage
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ runner.os }}-coverage
+          path: ./dist-newstyle/build/*/ghc-*/$PACKAGE-*/t/$PACKAGE-*/$PACKAGE-*.tix
+
+      - name: Upload benchmark
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ runner.os }}-benchmark
+          path: ./dist-newstyle/build/*/ghc-*/$PACKAGE-*/b/$PACKAGE-*/$PACKAGE-*.json
+
+      - name: Upload build log
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ runner.os }}-build-log
+          path: ./dist-newstyle/build/*/ghc-*/$PACKAGE-*/build.log
+
+      - name: Upload test log
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ runner.os }}-test-log
+          path: ./dist-newstyle/build/*/ghc-*/$PACKAGE-*/test/$PACKAGE-*/$PACKAGE-*.log
+
+      - name: Upload benchmark log
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ runner.os }}
