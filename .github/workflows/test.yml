@@ -15,7 +15,6 @@ jobs:
         os: [ubuntu-latest]
         ghc: [8.6.5, 8.8.3]
 
-# Setup haskell stack
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-haskell@v1
@@ -30,4 +29,4 @@ jobs:
         stack --no-terminal build
     - name: Test
       run: |
-        stack --no-terminal test --test-arguments --color --coverage
+        stack --no-terminal test --test-arguments --color --coverage-only-library
