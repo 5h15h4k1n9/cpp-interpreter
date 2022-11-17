@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        ghc: [8.6.5, 8.8.3]
+        ghc: [8.6.5, 8.8.3, 9.0.2]
 
     steps:
     - uses: actions/checkout@v2
@@ -28,4 +28,4 @@ jobs:
       run: |
         stack --no-terminal build
     - name: Test
-      run: stack clean && stack --no-terminal test --test-arguments --color --coverage
+      run: stack --no-terminal test --test-arguments --color --coverage
