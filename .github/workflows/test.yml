@@ -28,5 +28,4 @@ jobs:
       run: |
         stack --no-terminal build
     - name: Test
-      run: |
-        stack --no-terminal test --test-arguments --color --coverage-only-library
+      run: stack clean && stack --no-terminal test --test-arguments --color --coverage
