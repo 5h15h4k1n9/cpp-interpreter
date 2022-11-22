@@ -1,4 +1,4 @@
-module TypeOperations where
+module ValueOperations where
 
 import Ast
 import Errors
