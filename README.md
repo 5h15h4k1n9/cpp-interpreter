@@ -1,3 +1,5 @@
+<a href="https://github.com/5h15h4k1n9/cpp-interpreter/actions"><img alt="Build Status" src="https://github.com/5h15h4k1n9/cpp-interpreter/actions/workflows/build.yml/badge.svg"></a>
+<a href="https://github.com/5h15h4k1n9/cpp-interpreter/actions"><img alt="Test Status" src="https://github.com/5h15h4k1n9/cpp-interpreter/actions/workflows/test.yml/badge.svg"></a>
 # Mini C++ interpreter
 ## Tasks
 - [ ] Стандартные типы
