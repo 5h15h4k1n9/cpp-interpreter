@@ -1,4 +1,4 @@
-module Ast(module Ast) where
+module Ast where
 
 type Id = String
   
@@ -14,7 +14,7 @@ data CppType =
   | TChar                                   -- char
 -- | TDouble                                 -- double
 -- | TFun CppType [(Id, CppType)]            -- int bar(char x, bool y);
-  | TArray CppType Int                      -- int arr[10];
+  | TArray CppType                          -- int arr[];
   deriving (Eq, Show)
 
 data CppValue = 
@@ -22,7 +22,7 @@ data CppValue =
   | VInt Integer IntegerTypeModifier        -- 1, 2, 3
   | VBool Bool                              -- true, false
   | VChar Char                              -- 'a', 'b', 'c'
-  | VArray [CppValue] CppType               -- [1, 2, 3], "abc"
+  | VArray Integer [CppValue] CppType       -- [1, 2, 3], "abc"
   deriving (Eq, Show)
   
 data BinOp = 
