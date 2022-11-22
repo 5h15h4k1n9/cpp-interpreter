@@ -13,12 +13,12 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="base-4.15.1.0" level="project" />
-    <orderEntry type="library" name="ghc-bignum-1.1" level="project" />
-    <orderEntry type="library" name="ghc-prim-0.7.0" level="project" />
     <orderEntry type="library" name="hspec-2.8.5" level="project" />
     <orderEntry type="library" name="hspec-core-2.8.5" level="project" />
     <orderEntry type="library" name="hspec-discover-2.8.5" level="project" />
     <orderEntry type="library" name="hspec-expectations-0.8.2" level="project" />
+    <orderEntry type="library" name="ghc-bignum-1.1" level="project" />
+    <orderEntry type="library" name="ghc-prim-0.7.0" level="project" />
     <orderEntry type="library" name="QuickCheck-2.14.2" level="project" />
     <orderEntry type="library" name="HUnit-1.6.2.0" level="project" />
     <orderEntry type="library" name="ansi-terminal-0.11.3" level="project" />
