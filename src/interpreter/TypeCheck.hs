@@ -1,4 +1,4 @@
-module TypeCheck(module TypeCheck) where
+module TypeCheck where
 
 import Ast
 
@@ -10,7 +10,7 @@ getType (VInt   _     modifier) =
     Unsigned                   -> TInt Unsigned
 getType (VBool  _             ) = TBool
 getType (VChar  _             ) = TChar
-getType (VArray elems t       ) = TArray t (length elems)
+getType (VArray _ _ t         ) = TArray t 
 
 checkType :: CppValue -> CppType -> Bool
 checkType v t = getType v == t
