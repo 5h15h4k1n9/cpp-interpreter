@@ -3,3 +3,4 @@
 /out
 .idea
 stack.yaml
+cpp-interpreter.cabal
