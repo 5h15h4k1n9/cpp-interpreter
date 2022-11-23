@@ -1,4 +1,6 @@
 module Ast where
+  
+import TypeCheck(getType)
 
 type Id = String
   
@@ -15,7 +17,17 @@ data CppType =
 -- | TDouble                                 -- double
 -- | TFun CppType [(Id, CppType)]            -- int bar(char x, bool y);
   | TArray CppType                          -- int arr[];
-  deriving (Eq, Show)
+  deriving Eq
+
+instance Show CppType where
+  show TVoid = "void"
+  show (TInt m) = sign ++ "int" where
+    sign = case m of
+      Signed   -> "signed "
+      Unsigned -> "unsigned "
+  show TBool = "bool"
+  show TChar = "char"
+  show (TArray t) = show t ++ "[]"
 
 data CppValue = 
     VVoid                                   -- void foo();
@@ -23,7 +35,9 @@ data CppValue =
   | VBool Bool                              -- true, false
   | VChar Char                              -- 'a', 'b', 'c'
   | VArray Integer [CppValue] CppType       -- [1, 2, 3], "abc"
-  deriving (Eq, Show)
+
+instance (Show CppValue) where
+  show x = show $ getType x
   
 data BinOp = 
   -- Arithmetic
@@ -43,12 +57,30 @@ data BinOp =
   | And                                     -- &&
   | Or                                      -- ||
   | Xor                                     -- ^
-  deriving (Eq, Show)
+  
+instance (Show BinOp) where
+  show Add = "+"
+  show Sub = "-"
+  show Mul = "*"
+  show Div = "/"
+  show Mod = "%"
+  show Eq  = "=="
+  show Neq = "!="
+  show Lt  = "<"
+  show Gt  = ">"
+  show Leq = "<="
+  show Geq = ">="
+  show And = "&&"
+  show Or  = "||"
+  show Xor = "^"
 
 data UnOp = 
     Neg                                     -- -
   | Not                                     -- !
-  deriving (Eq, Show)
+
+instance (Show UnOp) where
+  show Neg = "-"
+  show Not = "!"
   
 data CppExpr = 
     EVar Id                                 -- x
@@ -56,7 +88,13 @@ data CppExpr =
   | EBinOp BinOp CppExpr CppExpr            -- x + y
   | EUnOp UnOp CppExpr                      -- -x
   | EArray CppExpr CppExpr                  -- arr[0]
-  deriving (Eq, Show)
+
+instance (Show CppExpr) where
+  show (EVar   var     ) = var
+  show (EVal   v       ) = show v
+  show (EBinOp op e1 e2) = "(" ++ show e1 ++ " " ++ show op ++ " " ++ show e2 ++ ")"
+  show (EUnOp  op e    ) = "(" ++ show op ++ show e ++ ")"
+  show (EArray e1 e2   ) = show e1 ++ "[" ++ show e2 ++ "]"
   
 data CppStmt = 
     SVar Id CppType CppExpr                 -- int x = 1;
