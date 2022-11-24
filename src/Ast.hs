@@ -23,7 +23,7 @@ data CppType =
 
 instance Show CppType where
   show TVoid      = "void"
-  show (TInt m  ) = show m ++ "int"
+  show (TInt m  ) = show m ++ " int"
   show TBool      = "bool"
   show TChar      = "char"
   show (TArray t) = show t ++ "[]"
@@ -37,10 +37,10 @@ data CppValue =
 
 instance (Show CppValue) where
   show VVoid          = "void"
-  show (VInt   v m  ) = show m ++ " " ++ show v
-  show (VBool  v    ) = show v
-  show (VChar  v    ) = show v
-  show (VArray _ v t) = show t ++ " " ++ show v
+  show (VInt   v m  ) = show m ++ " int " ++ show v
+  show (VBool  v    ) = "bool " ++ if v then "true" else "false"
+  show (VChar  v    ) = "char " ++ show v
+  show (VArray _ v t) = show t ++ "[]" ++ show v
   
 data BinOp = 
   -- Arithmetic
