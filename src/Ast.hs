@@ -1,13 +1,15 @@
 module Ast where
-  
-import TypeCheck(getType)
 
 type Id = String
   
 data IntegerTypeModifier = 
     Signed 
   | Unsigned
-  deriving (Eq, Show)
+  deriving Eq
+  
+instance (Show IntegerTypeModifier) where
+  show Signed   = "signed"
+  show Unsigned = "unsigned"
   
 data CppType = 
     TVoid                                   -- void foo();
@@ -20,13 +22,10 @@ data CppType =
   deriving Eq
 
 instance Show CppType where
-  show TVoid = "void"
-  show (TInt m) = sign ++ "int" where
-    sign = case m of
-      Signed   -> "signed "
-      Unsigned -> "unsigned "
-  show TBool = "bool"
-  show TChar = "char"
+  show TVoid      = "void"
+  show (TInt m  ) = show m ++ "int"
+  show TBool      = "bool"
+  show TChar      = "char"
   show (TArray t) = show t ++ "[]"
 
 data CppValue = 
@@ -37,7 +36,11 @@ data CppValue =
   | VArray Integer [CppValue] CppType       -- [1, 2, 3], "abc"
 
 instance (Show CppValue) where
-  show x = show $ getType x
+  show VVoid          = "void"
+  show (VInt   v m  ) = show m ++ " " ++ show v
+  show (VBool  v    ) = show v
+  show (VChar  v    ) = show v
+  show (VArray _ v t) = show t ++ " " ++ show v
   
 data BinOp = 
   -- Arithmetic
@@ -57,7 +60,7 @@ data BinOp =
   | And                                     -- &&
   | Or                                      -- ||
   | Xor                                     -- ^
-  
+
 instance (Show BinOp) where
   show Add = "+"
   show Sub = "-"
@@ -107,7 +110,7 @@ data CppStmt =
   | SWhile CppExpr CppStmt                  -- while (x) { y = 1; }
   | SFor CppExpr CppExpr CppExpr CppStmt    -- for (int i = 0; i < 10; i++) { y = 1; }
   | SReturn CppExpr                         -- return x;
-  deriving (Eq, Show)
+  deriving Show
   
 {-
 data CppFunc = 
@@ -116,6 +119,6 @@ data CppFunc =
 -}
 
 newtype CppProgram = CppProgram [CppStmt]   -- int main() { int x = 1; char y = 'a'; if (x > 0) { y = 'b'; } return 0; else { y = 'c'; } return 1; }
-  deriving (Eq, Show)
+  deriving Show
   
   
