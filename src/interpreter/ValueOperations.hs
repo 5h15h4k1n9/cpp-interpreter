@@ -4,29 +4,29 @@ import Ast
 import Errors
 
 toSInt :: CppValue -> CppValue
-toSInt VVoid          = error $ cannotConvertException TVoid (TInt Signed)
-toSInt (VInt   i _  ) = VInt ni                       Signed where
+toSInt v@VVoid       = error $ cannotConvertException v (TInt Signed)
+toSInt (VInt    i _) = VInt ni                       Signed where
     maxSInt = 2147483648
     iDiv = i `div` maxSInt
     iMod = i `mod` maxSInt
     ni = iMod - (iDiv `mod` 2) * maxSInt
-toSInt (VBool  b    ) = VInt (if b then 1 else 0)     Signed
-toSInt (VChar  c    ) = VInt (toInteger $ fromEnum c) Signed
-toSInt (VArray _ _ t) = error $ cannotConvertException (TArray t) (TInt Signed)
+toSInt (VBool   b  ) = VInt (if b then 1 else 0)     Signed
+toSInt (VChar   c  ) = VInt (toInteger $ fromEnum c) Signed
+toSInt v@VArray {}   = error $ cannotConvertException v (TInt Signed)
 
 toUInt :: CppValue -> CppValue
-toUInt VVoid          = error $ cannotConvertException TVoid (TInt Unsigned)
-toUInt (VInt   i _  ) = VInt (i `mod` 4294967296)     Unsigned
-toUInt (VBool  b    ) = VInt (if b then 1 else 0)     Unsigned
-toUInt (VChar  c    ) = VInt (toInteger $ fromEnum c) Unsigned
-toUInt (VArray _ _ t) = error $ cannotConvertException (TArray t) (TInt Unsigned)
+toUInt v@VVoid       = error $ cannotConvertException v (TInt Unsigned)
+toUInt (VInt    i _) = VInt (i `mod` 4294967296)     Unsigned
+toUInt (VBool   b  ) = VInt (if b then 1 else 0)     Unsigned
+toUInt (VChar   c  ) = VInt (toInteger $ fromEnum c) Unsigned
+toUInt v@VArray {}   = error $ cannotConvertException v (TInt Unsigned)
 
 toBool :: CppValue -> CppValue
-toBool VVoid          = error $ cannotConvertException TVoid TBool
-toBool (VInt   i _  ) = VBool (i /= 0)
-toBool (VBool  b    ) = VBool b
-toBool (VChar  c    ) = VBool (c /= '\0')
-toBool (VArray _ _ t) = error $ cannotConvertException (TArray t) TBool
+toBool v@VVoid       = error $ cannotConvertException v TBool
+toBool (VInt    i _) = VBool (i /= 0)
+toBool (VBool   b  ) = VBool b
+toBool (VChar   c  ) = VBool (c /= '\0')
+toBool v@VArray {}   = error $ cannotConvertException v TBool
 
 instance (Num CppValue) where
   -- (+)
