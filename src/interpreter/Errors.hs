@@ -1,22 +1,21 @@
-module Errors(module Errors) where
+module Errors where
 
 import Ast
-
-showType :: CppType -> String
-showType  TVoid       = "void"
-showType (TInt   m  ) = sign ++ "int" where
-  sign = case m of
-    Signed   -> "signed "
-    Unsigned -> "unsigned "
-showType  TBool       = "bool"
-showType  TChar       = "char"
-showType (TArray t _) = showType t ++ "[]"
+import TypeCheck
 
 unexpectedTypeException :: CppType -> CppType -> String
 unexpectedTypeException expected actual = 
-  "Exception: Unexpected type: " ++ showType actual ++ " (expected " ++ showType expected ++ ")"
+  "Exception: Unexpected type: " ++ show actual ++ " (expected " ++ show expected ++ ")"
   
-cannotConvertException :: CppType -> CppType -> String
+cannotConvertException :: CppValue -> CppType -> String
 cannotConvertException from to = 
-  "Exception: Cannot convert " ++ showType from ++ " to " ++ showType to
+  "Exception: Cannot convert " ++ show (getType from) ++ " to " ++ show to
+ 
+cannotEvalBinOpException :: BinOp -> CppValue -> CppValue -> String
+cannotEvalBinOpException op v1 v2 = 
+  "Exception: Cannot evaluate operation (" ++ show op ++ ") on " ++ show (getType v1) ++ " and " ++ show (getType v2)
+
+cannotEvalUnOpException :: UnOp -> CppValue -> String
+cannotEvalUnOpException op v = 
+  "Exception: Cannot evaluate operation (" ++ show op ++ ") on " ++ show (getType v)
 
