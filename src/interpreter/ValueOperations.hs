@@ -58,7 +58,7 @@ instance (Num CppValue) where
     Unsigned                            -> toUInt $ VInt (i1 - i2) Unsigned
   v1@(VInt _ Signed   ) - v2             = v1 - toSInt v2
   v1@(VInt _ Unsigned ) - v2             = v1 - toUInt v2
-  v1                    - v2             = toUInt v1 - toUInt v2
+  v1                    - v2             = toSInt v1 - toSInt v2
   -- abs
   abs (VInt i m) = VInt (abs i) m
   abs v          = toUInt $ abs $ toUInt v
@@ -101,16 +101,18 @@ instance (Integral CppValue) where
   toInteger v                 = toInteger $ toUInt v
  
 instance (Eq CppValue) where
-  (VInt  i1 _) == (VInt  i2 _) = i1 == i2
-  (VBool b1  ) == (VBool b2  ) = b1 == b2
-  (VChar c1  ) == (VChar c2  ) = c1 == c2
-  v1           == v2           = toUInt v1 == toUInt v2
+  (VInt  i1 Signed  ) == (VInt  i2 Signed  ) = i1 == i2
+  (VInt  i1 Unsigned) == (VInt  i2 Unsigned) = i1 == i2
+  (VBool b1         ) == (VBool b2         ) = b1 == b2
+  (VChar c1         ) == (VChar c2         ) = c1 == c2
+  v1                  == v2                  = toUInt v1 == toUInt v2
   
 instance (Ord CppValue) where
-  compare (VInt  i1 _) (VInt  i2 _) = compare i1 i2
-  compare (VBool b1  ) (VBool b2  ) = compare b1 b2
-  compare (VChar c1  ) (VChar c2  ) = compare c1 c2
-  compare v1           v2           = compare (toUInt v1) (toUInt v2) 
+  compare (VInt  i1 Signed  ) (VInt  i2 Signed  ) = compare i1 i2
+  compare (VInt  i1 Unsigned) (VInt  i2 Unsigned) = compare i1 i2
+  compare (VBool b1         ) (VBool b2         ) = compare b1 b2
+  compare (VChar c1         ) (VChar c2         ) = compare c1 c2
+  compare v1                  v2                  = compare (toUInt v1) (toUInt v2) 
 
 cppAnd :: CppValue -> CppValue -> CppValue
 cppAnd (VBool b1) (VBool b2) = VBool (b1 && b2)
