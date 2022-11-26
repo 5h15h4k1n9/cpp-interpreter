@@ -8,6 +8,7 @@
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/interpreter" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/parser" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/test/interpreter" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/.stack-work" />
     </content>
     <orderEntry type="inheritedJdk" />
