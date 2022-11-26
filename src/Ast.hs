@@ -6,7 +6,7 @@ data IntegerTypeModifier =
     Signed 
   | Unsigned
   deriving Eq
-  
+
 instance (Show IntegerTypeModifier) where
   show Signed   = "signed"
   show Unsigned = "unsigned"
@@ -16,7 +16,6 @@ data CppType =
   | TInt IntegerTypeModifier                -- signed int, unsigned int
   | TBool                                   -- bool
   | TChar                                   -- char
--- | TDouble                                 -- double
 -- | TFun CppType [(Id, CppType)]            -- int bar(char x, bool y);
   | TArray CppType                          -- int arr[];
   deriving Eq
@@ -59,7 +58,6 @@ data BinOp =
   -- Logical
   | And                                     -- &&
   | Or                                      -- ||
-  | Xor                                     -- ^
 
 instance (Show BinOp) where
   show Add = "+"
@@ -75,7 +73,6 @@ instance (Show BinOp) where
   show Geq = ">="
   show And = "&&"
   show Or  = "||"
-  show Xor = "^"
 
 data UnOp = 
     Neg                                     -- -
