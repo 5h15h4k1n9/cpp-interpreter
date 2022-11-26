@@ -1,11 +1,30 @@
 module EvalExpr(module EvalExpr) where
 
 import Ast
-import TypeOperations
+import ValueOperations
+import Errors
 
 evalBinOp :: BinOp -> CppValue -> CppValue -> CppValue
-evalBinOp Add v1@(VInt x Signed) v2 = case v2 of
-  VInt y Signed   -> VInt (x + y) Signed
-  VInt y Unsigned -> VInt (x + y) Signed
-  _               -> evalBinOp Add v1 (toInt v2)
-evalBinOp _   _                  _  = undefined
+-- Arithmetic
+evalBinOp Add v1 v2 = v1   +   v2
+evalBinOp Sub v1 v2 = v1   -   v2
+evalBinOp Mul v1 v2 = v1   *   v2
+evalBinOp Div v1 v2 = v1 `div` v2
+evalBinOp Mod v1 v2 = v1 `mod` v2
+-- Comparison
+evalBinOp Eq  v1 v2 = VBool (v1 == v2)
+evalBinOp Neq v1 v2 = VBool (v1 /= v2)
+evalBinOp Lt  v1 v2 = VBool (v1 <  v2)
+evalBinOp Gt  v1 v2 = VBool (v1 >  v2)
+evalBinOp Leq v1 v2 = VBool (v1 <= v2)
+evalBinOp Geq v1 v2 = VBool (v1 >= v2)
+-- Logical
+evalBinOp And v1 v2 = v1 `cppAnd` v2
+evalBinOp Or  v1 v2 = v1 `cppOr` v2
+
+evalUnOp :: UnOp -> CppValue -> CppValue
+evalUnOp op  v@VArray {} = error $ cannotEvalUnOpException op v
+evalUnOp Neg v           = -v
+evalUnOp Not (VBool b  ) = VBool (not b)
+evalUnOp Not v           = evalUnOp Not (toBool v)
+  
