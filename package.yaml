@@ -56,7 +56,9 @@ executables:
 tests:
   cpp-interpreter-test:
     main:                Spec.hs
-    source-dirs:         test
+    source-dirs:
+    - test
+    - test/interpreter
     ghc-options:
     - -threaded
     - -rtsopts
