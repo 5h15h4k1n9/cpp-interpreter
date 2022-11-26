@@ -51,44 +51,54 @@ instance (Num CppValue) where
   v1                    * v2             = toUInt v1 * toUInt v2
   -- (-)
   v1@(VInt i1 Signed  ) - v2@(VInt i2 m) = case m of
-    Signed                             -> toSInt $ VInt (i1 - i2) Signed
-    Unsigned                           -> toUInt v1 - v2
+    Signed                              -> toSInt $ VInt (i1 - i2) Signed
+    Unsigned                            -> toUInt v1 - v2
   v1@(VInt i1 Unsigned) - v2@(VInt i2  m) = case m of
-    Signed                             -> v1 - toUInt v2
-    Unsigned                           -> toUInt $ VInt (i1 - i2) Unsigned
+    Signed                              -> v1 - toUInt v2
+    Unsigned                            -> toUInt $ VInt (i1 - i2) Unsigned
   v1@(VInt _ Signed   ) - v2             = v1 - toSInt v2
   v1@(VInt _ Unsigned ) - v2             = v1 - toUInt v2
   v1                    - v2             = toUInt v1 - toUInt v2
   -- abs
-  abs (VInt i m)                        = VInt (abs i) m
-  abs v                                 = toUInt $ abs $ toUInt v
+  abs (VInt i m) = VInt (abs i) m
+  abs v          = toUInt $ abs $ toUInt v
   -- signum
-  signum (VInt i m)                     = VInt (signum i) m
-  signum v                              = toUInt $ signum $ toUInt v
+  signum (VInt i m) = VInt (signum i) m
+  signum v          = toUInt $ signum $ toUInt v
   -- fromInteger
-  fromInteger i                         = VInt i Unsigned
-  -- negate
-  negate (VInt i _)                     = VInt (negate i) Signed
-  negate v                              = toSInt $ negate $ toSInt v
+  fromInteger i = VInt i Unsigned
+  -- negate 
+  negate (VInt i _) = VInt (negate i) Signed
+  negate v          = toSInt $ negate $ toSInt v
 
-instance (Fractional CppValue) where
-  -- (/)
-  v1@(VInt i1 Signed  ) / v2@(VInt i2 m) = case m of
-    Signed                             -> toSInt $ VInt (i1 `div` i2) Signed
-    Unsigned                           -> toUInt v1 / v2 
-  v1@(VInt i1 Unsigned) / v2@(VInt i2 m) = case m of
-    Signed                              -> v1 / toUInt v2
-    Unsigned                            -> toUInt $ VInt (i1 `div` i2) Unsigned
-  v1@(VInt _ Signed   ) / v2             = v1 / toSInt v2
-  v1@(VInt _ Unsigned ) / v2             = v1 / toUInt v2
-  v1                    / v2             = toUInt v1 / toUInt v2
-{-
-  -- recip
-  recip (VInt i _)                   = VInt (recip i) Unsigned
-  recip v                            = toUInt $ recip $ toUInt v
-  -- fromRational
-  fromRational r                     = VInt (fromRational r) Unsigned
--}
+instance (Enum CppValue) where
+  -- toEnum
+  toEnum i = toUInt $ VInt (toInteger i) Unsigned
+  -- fromEnum
+  fromEnum (VInt i Unsigned) = fromInteger i
+  fromEnum v                 = fromEnum $ toUInt v
+  
+instance (Real CppValue) where
+  -- toRational
+  toRational (VInt i Unsigned) = toRational i
+  toRational v                 = toRational $ toUInt v
+
+instance (Integral CppValue) where
+  -- quotRem
+  quotRem v1@(VInt i1 Signed  ) v2@(VInt i2 m) = case m of
+    Signed                        -> (toSInt $ VInt (i1 `quot` i2) Signed,
+                                      toSInt $ VInt (i1 `rem`  i2) Signed)
+    Unsigned                      -> quotRem (toUInt v1) v2
+  quotRem v1@(VInt i1 Unsigned) v2@(VInt i2 m) = case m of
+    Signed                        -> quotRem v1 (toUInt v2)
+    Unsigned                      -> (toUInt $ VInt (i1 `quot` i2) Unsigned,
+                                      toUInt $ VInt (i1 `rem`  i2) Unsigned)
+  quotRem v1@(VInt _  Signed  ) v2 = quotRem v1 (toSInt v2)
+  quotRem v1@(VInt _  Unsigned) v2 = quotRem v1 (toUInt v2)
+  quotRem v1                    v2 = quotRem (toUInt v1) (toUInt v2)
+  -- toInteger
+  toInteger (VInt i Unsigned) = i
+  toInteger v                 = toInteger $ toUInt v
  
 instance (Eq CppValue) where
   (VInt  i1 _) == (VInt  i2 _) = i1 == i2
