@@ -13,8 +13,8 @@ evalBinOp op  v1           v2@VVoid     = error $ cannotEvalBinOpException op v1
 evalBinOp Add v1 v2 = v1   +   v2
 evalBinOp Sub v1 v2 = v1   -   v2
 evalBinOp Mul v1 v2 = v1   *   v2
-evalBinOp Div v1 v2 = v1 `div` v2
-evalBinOp Mod v1 v2 = v1 `mod` v2
+evalBinOp Div v1 v2 = v1 `quot` v2
+evalBinOp Mod v1 v2 = v1 `rem` v2
 -- Comparison
 evalBinOp Eq  v1 v2 = VBool (v1 == v2)
 evalBinOp Neq v1 v2 = VBool (v1 /= v2)
