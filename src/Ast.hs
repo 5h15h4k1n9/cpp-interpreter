@@ -40,13 +40,6 @@ instance (Show AccessModifier) where
   show Public    = "public"
   show Private   = "private"
   show Protected = "protected"
-  
-data ClassMember =
-    CMethod Id CppType [(Id, CppType)] [Statement]
-  | CField Id CppType
-  deriving Eq
-  
-data 
 
 data CppValue = 
     VVoid                                   -- void foo();
