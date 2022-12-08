@@ -16,16 +16,37 @@ data CppType =
   | TInt IntegerTypeModifier                -- signed int, unsigned int
   | TBool                                   -- bool
   | TChar                                   -- char
--- | TFun CppType [(Id, CppType)]            -- int bar(char x, bool y);
+--  | TFun CppType [(Id, CppType)]            -- int bar(char x, bool y);
   | TArray CppType                          -- int arr[];
+  | TClass Id                               -- class Foo;
   deriving Eq
+
 
 instance Show CppType where
   show TVoid      = "void"
-  show (TInt m  ) = show m ++ " int"
+  show (TInt   m) = show m ++ " int"
   show TBool      = "bool"
   show TChar      = "char"
   show (TArray t) = show t ++ "[]"
+  show (TClass i) = "class " ++ i
+
+data AccessModifier =
+    Public
+  | Private
+  | Protected
+  deriving Eq
+  
+instance (Show AccessModifier) where
+  show Public    = "public"
+  show Private   = "private"
+  show Protected = "protected"
+  
+data ClassMember =
+    CMethod Id CppType [(Id, CppType)] [Statement]
+  | CField Id CppType
+  deriving Eq
+  
+data 
 
 data CppValue = 
     VVoid                                   -- void foo();
@@ -117,5 +138,3 @@ data CppFunc =
 
 newtype CppProgram = CppProgram [CppStmt]   -- int main() { int x = 1; char y = 'a'; if (x > 0) { y = 'b'; } return 0; else { y = 'c'; } return 1; }
   deriving Show
-  
-  

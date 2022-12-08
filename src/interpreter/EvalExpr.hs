@@ -10,11 +10,11 @@ evalBinOp op  v1           v2@VArray {} = error $ cannotEvalBinOpException op v1
 evalBinOp op  v1@VVoid     v2           = error $ cannotEvalBinOpException op v1 v2
 evalBinOp op  v1           v2@VVoid     = error $ cannotEvalBinOpException op v1 v2
 -- Arithmetic
-evalBinOp Add v1 v2 = v1   +   v2
-evalBinOp Sub v1 v2 = v1   -   v2
-evalBinOp Mul v1 v2 = v1   *   v2
+evalBinOp Add v1 v2 = v1   +    v2
+evalBinOp Sub v1 v2 = v1   -    v2
+evalBinOp Mul v1 v2 = v1   *    v2
 evalBinOp Div v1 v2 = v1 `quot` v2
-evalBinOp Mod v1 v2 = v1 `rem` v2
+evalBinOp Mod v1 v2 = v1 `rem`  v2
 -- Comparison
 evalBinOp Eq  v1 v2 = VBool (v1 == v2)
 evalBinOp Neq v1 v2 = VBool (v1 /= v2)
@@ -32,3 +32,11 @@ evalUnOp op  v@VVoid     = error $ cannotEvalUnOpException op v
 evalUnOp Neg v           = -v
 evalUnOp Not (VBool b  ) = VBool (not b)
 evalUnOp Not v           = evalUnOp Not (toBool v)
+
+evalExpr :: CppExpr -> CppValue
+evalExpr (EVar var) = error $ "Variable " ++ var ++ " not found"
+evalExpr (EVal v  ) = v
+evalExpr (EBinOp op e1 e2) = evalBinOp op (evalExpr e1) (evalExpr e2)
+evalExpr (EUnOp op e    ) = evalUnOp op (evalExpr e)
+evalExpr (EArray e1 e2) = error "Array not found"
+

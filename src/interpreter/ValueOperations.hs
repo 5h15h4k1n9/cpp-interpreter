@@ -75,7 +75,7 @@ instance (Enum CppValue) where
   -- toEnum
   toEnum i = toUInt $ VInt (toInteger i) Unsigned
   -- fromEnum
-  fromEnum (VInt i Unsigned) = fromInteger i
+  fromEnum (VInt i Unsigned) = fromEnum i
   fromEnum v                 = fromEnum $ toUInt v
   
 instance (Real CppValue) where
@@ -106,17 +106,17 @@ instance (Eq CppValue) where
   (VBool b1         ) == (VBool b2         ) = b1 == b2
   (VChar c1         ) == (VChar c2         ) = c1 == c2
   v1                  == v2                  = toUInt v1 == toUInt v2
-  
+
 instance (Ord CppValue) where
   compare (VInt  i1 Signed  ) (VInt  i2 Signed  ) = compare i1 i2
   compare (VInt  i1 Unsigned) (VInt  i2 Unsigned) = compare i1 i2
   compare (VBool b1         ) (VBool b2         ) = compare b1 b2
   compare (VChar c1         ) (VChar c2         ) = compare c1 c2
-  compare v1                  v2                  = compare (toUInt v1) (toUInt v2) 
+  compare v1                  v2                  = compare (toUInt v1) (toUInt v2)
 
 cppAnd :: CppValue -> CppValue -> CppValue
 cppAnd (VBool b1) (VBool b2) = VBool (b1 && b2)
-cppAnd v1        v2          = toBool v1 `cppAnd` toBool v2
+cppAnd v1         v2         = toBool v1 `cppAnd` toBool v2
 
 cppOr :: CppValue -> CppValue -> CppValue
 cppOr (VBool b1) (VBool b2) = VBool (b1 || b2)
